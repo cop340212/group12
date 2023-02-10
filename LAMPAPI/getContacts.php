@@ -37,10 +37,11 @@ else
       $fetchedLastName = $row["LastName"];
       $fetchedEmail = $row["Email"];
       $fetchedPhone = $row["Phone"];
+      $fetchedID = $row["ID"];
 
       //Echoes each contact as a JSON element
 
-      array_push($allContacts,array("FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
+      array_push($allContacts,array( "ID" => $fetchedID ,"FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
 
       
 
