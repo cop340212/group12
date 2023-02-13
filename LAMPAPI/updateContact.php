@@ -20,7 +20,7 @@ $conn = new  mysqli("localhost", "admin", "password", "COP4331");
 
 if ($conn->connect_error) 
 {
-	echo "Could not connect to server";
+   http_response_code(403);
 } 
 
 else
@@ -49,23 +49,13 @@ else
    }
    else
    {
-      echo "Error " . $conn->error;
+      http_response_code(405);
    }
 
 
 }
 
 $conn->close();
-
-
-
-
-
-
-
-
-
-
 
 function getRequestInfo()
 {

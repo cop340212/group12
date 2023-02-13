@@ -20,8 +20,8 @@ $conn = new  mysqli("localhost", "admin", "password", "COP4331");
 
 if ($conn->connect_error) 
 {
-	//  returnWithError( $conn->connect_error );
-	echo "Could not connect to server";
+	  returnWithError( $conn->connect_error );
+     http_response_code(403);
 } 
 
 else
@@ -36,8 +36,7 @@ else
    {
       if($contactUserID == $row["UserID"])
       {
-         print_r($row);
-         echo "This contact already exists!";
+         http_response_code(401);
          return;
       }
    }
