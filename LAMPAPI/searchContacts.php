@@ -18,7 +18,6 @@ $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 if ($conn->connect_error) 
 {
    returnWithError( $conn->connect_error );
-   http_response_code(403);
 } 
 else
 {
@@ -42,7 +41,7 @@ else
       $fetchedLastName = $row["LastName"];
       $fetchedEmail = $row["Email"];
       $fetchedPhone = $row["Phone"];
-      //Push each contact to an array to return later
+      //Echoes each contact as a JSON element
       array_push($allContacts, array("FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
 
 
@@ -53,6 +52,10 @@ else
 
    foreach($allContacts as $contact)
    {
+      //echo "This is the search value: $userSearch";
+      //echo "\nThis is the current contact stuff\n";
+      //echo $contact["FirstName"];
+      //print_r($contact);
 
 
       if(str_contains(strtolower($contact["FirstName"]),$userSearch))
@@ -71,6 +74,9 @@ else
       $phoneSplit = preg_split('/[-|)|(]/', $contact["Phone"],-1, PREG_SPLIT_NO_EMPTY);
       $phoneOnlyNums = implode($phoneSplit);
       
+
+      
+
       if(str_contains($phoneOnlyNums,$userSearch))
       {
          array_push($finalSearchedArray, $contact);

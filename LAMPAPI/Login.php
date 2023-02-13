@@ -13,7 +13,6 @@ $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 if ($conn->connect_error) 
 {
    returnWithError( $conn->connect_error );
-   http_response_code(403);
 } 
 
 else
@@ -40,13 +39,15 @@ else
       }
       else
       {
-         http_response_code(401);
+	 //returnWithError("The password you used was incorrect try again");
+	 echo "The password you used was incorrect try again";
       }
 
    }
    else
    {
-      http_response_code(401);
+	 //  returnWithError("This Email does not exist!");
+	 echo "This Email does not exist!";
    }
 
 }

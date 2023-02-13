@@ -14,7 +14,7 @@ $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 
 if ($conn->connect_error) 
 {
-   http_response_code(403);
+   returnWithError( $conn->connect_error );
 } 
 
 else
@@ -28,7 +28,7 @@ else
 
    if($row = $result->fetch_assoc())
    {
-      http_response_code(401);
+      returnWithError("This Email is already in use!");
    }
    else
    {
@@ -69,6 +69,12 @@ function sendResultInfoAsJson( $obj )
    echo $obj;
 }
 
+function returnWithError( $err )
+{
+   $retValue = '{"UserID":"0","FirstName":"","LastName":"","Email":"","Phone":"","error":"' . $err . '"}';
+   //  sendResultInfoAsJson( $retValue );
+   echo "This Email already exists!";
+}
 
 function returnWithSuccess ($UserID )
 {
