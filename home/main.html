@@ -16,7 +16,7 @@
 
     
     <!-- CSS Template -->
-    <link href="main.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
     <main class="main-search position-absolute top-0 start-50 translate-middle-x">
       <form id="searchInput" action="javascript:myFunction()">
         <div class="input-group rounded">
@@ -30,9 +30,12 @@
     </main>
   </head>
   <body>
-    <table id="contacts-display">
-      <tr><td id="test-all"></td></tr>
-    </table>
+    <span width=100%>
+      <table id="contacts-display" style="width:50%" class="table table-hover text-nowrap">
+        <tr><td id="test-all">test-all element</td></tr>
+      </table>
+      <br />
+    </span>
 
     <!-- Manage modal -->
     <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">

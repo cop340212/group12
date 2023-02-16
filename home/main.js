@@ -1,3 +1,4 @@
+"use strict";
 
 function myFunction() {
     var x = document.getElementById("searchInput").elements[0].value;
@@ -18,11 +19,11 @@ function getContacts(userId) {
             //     txt += myObj[x].names + "<br>";
             // }
             // document.getElementById("arrayContent").innerHTML = txt;
-            console.log(`Response = ${JSON.parse(this.responseText)}`);
+            console.log(`Response = ${this}`);
             document.getElementById("test-all").innerHTML =
                           this.responseText;
         }
     };
-    xmlhttp.open("GET", "https://codegojolt.xyz/LAMPAPI/getContacts.php?ID=20", true);
+    xmlhttp.open("GET", "https://codegojolt.xyz/LAMPAPI/getContacts.php?ID=4", true);
     xmlhttp.send();
 }
