@@ -15,11 +15,9 @@
 
     
     <!-- CSS Template -->
-    <link href="sign-in.css" rel="stylesheet">
-  </head>
-  <body>
+    <link href="main.css" rel="stylesheet">
     <main class="main-search position-absolute top-0 start-50 translate-middle-x">
-      <form id="searchInput">
+      <form id="searchInput" action="javascript:myFunction()">
         <div class="input-group rounded">
             <input type="search" class="form-control rounded"  placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
             <button type="button" class="btn btn-primary" onclick="myFunction()">
@@ -29,9 +27,257 @@
       </form>
       <p id="results"></p>
     </main>
+  </head>
+  <body>
     <table id="contacts-display">
       <tr><td id="test-all"></td></tr>
     </table>
+
+    <!-- Manage modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aboutModalLabel">Edit Contact Info</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form body start-->
+            <main class="form-signin w-100 m-auto">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="firstInput" value="John" required> <!-- These value-"" fields would need to be filled-->
+                  <label for="firstInput">First name</label>
+                </div>
+          
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="lastInput" value="Doe" required> <!-- These value-"" fields would need to be filled-->
+                  <label for="lastInput">Last name</label>
+                </div>
+          
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="emailInput" value="johndoe@domain.com" required> <!-- These value-"" fields would need to be filled-->
+                  <label for="emailInput">Email address</label>
+                  <div class="invalid-feedback">
+                    Invalid Email
+                  </div>
+                </div>
+
+                <div class="form-floating">
+                  <input type="tel" class="form-control" id="phoneInput" value = "(123)-456-7890" required> <!-- These value-"" fields would need to be filled-->
+                  <label for="phoneInput">Phone number</label>
+                </div>
+                
+                <!-- Form body end-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="delete" data-bs-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Table will prioritize width:50% but will never wrap the text to maintain readability-->
+    <table style="width:50%" class="table table-hover text-nowrap">
+      <thead>
+        <tr>
+          <th class="th-lg">First</th>
+          <th class="th-lg">Last</th>
+          <th class="th-lg">Email</th>
+          <th class="th-lg">Phone Number</th>
+          <th class="th-lg">Manage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>motto@mdo.com</td>
+          <td>(123)-456-7890</td>
+          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
+            Manage
+          </button></td>
+          
+        </tr>
+        <tr>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>jacobthornton@32ft.com</td>
+          <td>(234)-567-8901</th>
+          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
+            Manage
+          </button></td>
+        </tr>
+        <tr>
+          <td>Larry</td>
+          <td>The Bird</td>
+          <td>fakeemail@jeemail.com</td>
+          <td>(345)-678-9012</th>
+          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
+            Manage
+          </button></td>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+        <tr>
+          <td>Padding</td>
+          <td>Entry</td>
+          <td>padded@entry</td>
+          <td>(123)-456-7890</th>
+        </tr>
+      </tbody>
+    </table>
   </body>
+  <body>
 </html>
   
