@@ -10,20 +10,33 @@ function myFunction() {
 
 function getContacts(userId) {
     console.log("getting all contacts...");
-    var obj, xmlhttp, myObj, x, txt = "";
+    var xmlhttp, myObj;
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            // myObj = JSON.parse(this.responseText);
-            // for (x in myObj) {
-            //     txt += myObj[x].names + "<br>";
-            // }
-            // document.getElementById("arrayContent").innerHTML = txt;
-            console.log(`Response = ${this}`);
-            document.getElementById("test-all").innerHTML =
-                          this.responseText;
-        }
+            console.log("About to parse and assign to myObj")
+            myObj = JSON.parse(this.responseText);
+            fillResponse(myObj);
+         }
     };
-    xmlhttp.open("GET", "https://codegojolt.xyz/LAMPAPI/getContacts.php?ID=4", true);
-    xmlhttp.send();
+    xmlhttp.open("POST", "https://codegojolt.xyz/LAMPAPI/getContacts.php", true);
+    xmlhttp.send(JSON.stringify({ "ID": 33 }));
+}
+
+function fillResponse(myObj) {
+    var displayTable = document.getElementById('output-table-body');
+    for (let i=0; i < myObj.length; i++) {
+        var rec = [myObj[i].FirstName, myObj[i].LastName, myObj[i].Email, myObj[i].Phone];
+        let newRow = document.createElement("tr");
+        for (let j=0; j < rec.length; j++) {
+            let newCell = document.createElement("td");
+            newCell.innerHTML = rec[j];
+            newRow.appendChild(newCell);
+        }
+        displayTable.appendChild(newRow);
+        // document.getElementById("arrayContent").innerHTML = txt;
+        // console.log(`Response = ${myObj}`);
+        // document.getElementById("test-all").innerHTML =
+        //           JSON.stringify(myObj);
+    }
 }
