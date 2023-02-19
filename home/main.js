@@ -1,26 +1,48 @@
 "use strict";
 
-function myFunction() {
+function myFunction(userID) {
     var x = document.getElementById("searchInput").elements[0].value;
-    if (x == "")
-        getContacts();
-    else
-        document.getElementById("results").innerHTML = "Prompt search for: " + x;
+    var url = "https://codegojolt.xyz/LAMPAPI/";
+    userID = 33;
+    getContacts(userID, url, x);
   }
 
-function getContacts(userId) {
+function getContacts(userId, url, search) {
     console.log("getting all contacts...");
-    var xmlhttp, myObj;
+    var xmlhttp, myObj, payload = {"ID": userId};
+    // Search box empty
+    if (search == "")
+        url += "getContacts.php";
+    // Use search box input
+    else {
+        url += "searchContacts.php";
+        payload.Search = search;
+    // document.getElementById("results").innerHTML = "Prompt search for: " + x;
+}
+    // Debug
+    console.log(`url = ${url}`);
+    console.log(`JSON = ${JSON.stringify(payload)}`);
+
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("About to parse and assign to myObj")
             myObj = JSON.parse(this.responseText);
+            clearResults();
             fillResponse(myObj);
          }
     };
-    xmlhttp.open("POST", "https://codegojolt.xyz/LAMPAPI/getContacts.php", true);
-    xmlhttp.send(JSON.stringify({ "ID": 33 }));
+    xmlhttp.open("POST", url, true);
+    xmlhttp.send(JSON.stringify(payload));
+}
+
+function clearResults() {
+    // Get beginning of table body
+    var displayTable = document.getElementById('output-table-body');
+    // Loop through and remove all children
+    while (displayTable.lastElementChild) {
+        displayTable.removeChild(displayTable.lastElementChild);
+    }
 }
 
 function fillResponse(myObj) {
