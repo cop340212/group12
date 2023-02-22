@@ -1,5 +1,15 @@
 <?php
 
+//Group 12
+//COP 4331
+//LAMP API searchContacts
+
+/*
+   This api is used to search through the database for contacts.
+   This takes in the user and the search query.
+   Returns all contacts that match.
+*/
+
 //Get JSON of the current user
 $inData = getRequestInfo();
 
@@ -18,6 +28,7 @@ $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 if ($conn->connect_error) 
 {
    returnWithError( $conn->connect_error );
+   http_response_code(403);
 } 
 else
 {
@@ -41,23 +52,19 @@ else
       $fetchedLastName = $row["LastName"];
       $fetchedEmail = $row["Email"];
       $fetchedPhone = $row["Phone"];
-      //Echoes each contact as a JSON element
+      //Push each contact to an array to return later
       array_push($allContacts, array("FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
 
 
    }
 
+   //Makes the input lowercase so its not case sensitive
    $userSearch = strtolower($userSearch);
    $finalSearchedArray = array();
 
+   //Checks to make sure anything matches
    foreach($allContacts as $contact)
    {
-      //echo "This is the search value: $userSearch";
-      //echo "\nThis is the current contact stuff\n";
-      //echo $contact["FirstName"];
-      //print_r($contact);
-
-
       if(str_contains(strtolower($contact["FirstName"]),$userSearch))
       {
          array_push($finalSearchedArray, $contact);
@@ -71,12 +78,10 @@ else
          array_push($finalSearchedArray, $contact);
       }
 
+      //Splits up the string and merges it to remove the parenthesis and dashes
       $phoneSplit = preg_split('/[-|)|(]/', $contact["Phone"],-1, PREG_SPLIT_NO_EMPTY);
       $phoneOnlyNums = implode($phoneSplit);
       
-
-      
-
       if(str_contains($phoneOnlyNums,$userSearch))
       {
          array_push($finalSearchedArray, $contact);
