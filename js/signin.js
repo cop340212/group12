@@ -1,52 +1,74 @@
 "use strict";
 
 // Credit to gil for the original code from main.js
-function myFunction(userID) 
+async function signInFunc(userID) 
 {
-    var emailPrompt = document.getElementById("floatingEmail").elements[0].value;
-    var passwordPrompt = document.getElementById("floatingPassword").elements[0].value;
+    var form = document.getElementById("verification");
+    var emailPrompt = form.elements["floatingEmail"].value;
+    var passwordPrompt = form.elements["floatingPassword"].value;
     var url = "https://codegojolt.xyz/LAMPAPI/";
-    verifyLogin(emailPrompt, passwordPrompt, url);
+    const returnVal = await verifyLogin(emailPrompt, passwordPrompt, url);
+    console.log(returnVal);
+
+    switch(returnVal)
+    {
+        case 200:
+            console.log("Redirecting to hardcoded: /home/main.html");
+            document.getElementById("floatingEmail").setAttribute("class", "form-control is-valid");
+            document.getElementById("floatingPassword").setAttribute("class", "form-control is-valid");
+            location.href = '/home/main.html';
+            break;
+        case 401:
+            console.log("User Error: 401");
+            document.getElementById("floatingEmail").setAttribute("class", "form-control is-invalid");
+            break;    
+        case 402:
+            console.log("User Error: 402");
+            document.getElementById("floatingPassword").setAttribute("class", "form-control is-invalid");
+            document.getElementById("floatingEmail").setAttribute("class", "form-control is-valid");
+            break;
+        case 403:
+            console.log("Debug Error: 403");
+            break;
+        case 403:
+            console.log("Debug Error: 404");
+            break;
+    }
 }
 
-function verifyLogin(email, password)
+function verifyLogin(email, password, url)
 {
-    console.log("Verifying user: " + email + " : " + password);
-    var xmlhttp, myObj, payload = {"Email": userId, "Password": password};
-    url += "login.php";
+    var xmlhttp, myObj, payload = {"Email": email, "Password": password};
+    url += "Login.php";
     payload.Email = email;
     payload.Password = password;
 
     // Debug
     console.log(`url = ${url}`);
     console.log(`JSON = ${JSON.stringify(payload)}`);
-
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() 
+    return new Promise(function (resolve) 
     {
-        if (this.readyState == 4) 
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() 
         {
-            switch(this.status)
+            if (this.readyState == 4) 
             {
-                case 200:
-                    console.log("About to parse and assign to myObj");
-                    break;
-                case 401:
-                    console.log("Common Error 401: Username Does Not Exist");
-                    return false;
-                case 402:
-                    console.log("Common Error 402: Username Does Not Exist");
-                    return false;
-                case 403:
-                    console.log("Debug Error 403: Could Not Connect to Database");
-                    return null;
-                case 404:
-                    console.log("Debug Error 404: URL Not Found");
-                    return null;
+                switch(this.status)
+                {
+                    case 200:
+                        resolve(200);
+                    case 401:
+                        resolve(401);
+                    case 402:
+                        resolve(402);
+                    case 403:
+                        resolve(403);
+                    case 404:
+                        resolve(404);
+                }
             }
-            
-        }
-    };
-    xmlhttp.open("POST", url, true);
-    xmlhttp.send(JSON.stringify(payload));
+        };
+        xmlhttp.open("POST", url, true);
+        xmlhttp.send(JSON.stringify(payload));
+    });
 }
