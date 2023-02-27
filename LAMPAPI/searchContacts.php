@@ -65,7 +65,6 @@ else
    //Checks to make sure anything matches
    foreach($allContacts as $contact)
    {
-      echo $contact["FirstName"];
       
       //Splits up the string and merges it to remove the parenthesis and dashes
       $phoneSplit = preg_split('/[-|)|(]/', $contact["Phone"],-1, PREG_SPLIT_NO_EMPTY);
