@@ -65,24 +65,26 @@ else
    //Checks to make sure anything matches
    foreach($allContacts as $contact)
    {
-      if(str_contains(strtolower($contact["FirstName"]),$userSearch))
-      {
-         array_push($finalSearchedArray, $contact);
-      }
-      if(str_contains(strtolower($contact["LastName"]),$userSearch))
-      {
-         array_push($finalSearchedArray, $contact);
-      }
-      if(str_contains(strtolower($contact["Email"]),$userSearch))
-      {
-         array_push($finalSearchedArray, $contact);
-      }
-
+      echo $contact["FirstName"];
+      
       //Splits up the string and merges it to remove the parenthesis and dashes
       $phoneSplit = preg_split('/[-|)|(]/', $contact["Phone"],-1, PREG_SPLIT_NO_EMPTY);
       $phoneOnlyNums = implode($phoneSplit);
       
-      if(str_contains($phoneOnlyNums,$userSearch))
+      if(str_contains(strtolower($contact["FirstName"]),$userSearch))
+      {
+         array_push($finalSearchedArray, $contact);
+      }
+      else if(str_contains(strtolower($contact["LastName"]),$userSearch))
+      {
+         array_push($finalSearchedArray, $contact);
+      }
+      else if(str_contains(strtolower($contact["Email"]),$userSearch))
+      {
+         array_push($finalSearchedArray, $contact);
+      }
+
+      else if(str_contains($phoneOnlyNums,$userSearch))
       {
          array_push($finalSearchedArray, $contact);
       }
