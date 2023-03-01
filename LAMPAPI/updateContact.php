@@ -1,9 +1,19 @@
 <?php
 
+//Group 12
+//COP 4331
+//LAMP API updateContact
 
+/*
+   This api is used to update a contact info.
+   It takes an input of the user and contact to change.
+   Then returns the new data of the contact
+*/
+
+//Get input data
 $inData = getRequestInfo();
 
-
+//Save as local variables
 $contactID = $inData["ID"];
 $updatedFirstName = $inData["FirstName"];
 $updatedLastName = $inData["LastName"];
@@ -13,22 +23,26 @@ $updatedEmail = $inData["Email"];
 
 
 
-
+//Connect to database
 $conn = new  mysqli("localhost", "admin", "password", "COP4331");
 
 
-
+//If there is a connection error return
 if ($conn->connect_error) 
 {
-	echo "Could not connect to server";
+   http_response_code(403);
+   return;
 } 
 
 else
 {
+   //Set up an update query using the data aquired
    $sql = "UPDATE Contacts SET FirstName = '$updatedFirstName', LastName = '$updatedLastName', Phone = '$updatedPhone', Email = '$updatedEmail' WHERE ID = $contactID";
 
+   //Makes sure that it can be updated properly
    if ($conn -> query($sql) === TRUE)
    {
+      //Gets the new information just changed and saves for return
       $stmt1 = $conn->prepare("SELECT * FROM Contacts WHERE ID = ?");
       $stmt1->bind_param("s", $contactID);
       $stmt1->execute();
@@ -49,23 +63,13 @@ else
    }
    else
    {
-      echo "Error " . $conn->error;
+      http_response_code(405);
    }
 
 
 }
 
 $conn->close();
-
-
-
-
-
-
-
-
-
-
 
 function getRequestInfo()
 {
@@ -76,13 +80,6 @@ function sendResultInfoAsJson( $obj )
 {
    header('Content-type: application/json');
    echo $obj;
-}
-
-function returnWithError( $err )
-{
-   $retValue = '{"userID":"0","FirstName":"","LastName":"","Email":"","Phone":"","error":"' . $err . '"}';
-   //  sendResultInfoAsJson( $retValue );
-   echo "This Contact Already exists!";
 }
 
 function returnWithSuccess ($input )

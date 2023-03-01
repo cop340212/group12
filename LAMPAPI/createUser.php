@@ -1,24 +1,37 @@
 <?php
 
+//Group 12
+//COP 4331
+//LAMP API createUser
 
+/*
+   This api is used to create a new user into the database.
+   This takes in the json input of the user to create.
+   Then it adds it to the database and returns it.
+*/
+
+//Get data
 $inData = getRequestInfo();
 
+//Save as local variables
 $userFirstName = $inData["FirstName"];
 $userLastName = $inData["LastName"];
 $userEmail = $inData["Email"];
 $userPhone = $inData["Phone"];
 $userPassword = $inData["Password"];
 
+//Connect to database
 $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 
-
+//If there was a connection error return
 if ($conn->connect_error) 
 {
-   returnWithError( $conn->connect_error );
+   http_response_code(403);
 } 
 
 else
 {
+   //Prepare the check to make sure there is no other user with this email
    $stmt1 = $conn->prepare("SELECT * FROM Users WHERE Email = ?");
    $stmt1->bind_param("s", $userEmail);
    $stmt1->execute();
@@ -26,19 +39,21 @@ else
 
    $stmt1->close();
 
+   //If the email matches return
    if($row = $result->fetch_assoc())
    {
-      returnWithError("This Email is already in use!");
+      http_response_code(401);
    }
    else
    {
-
+      //Since email doesnt exist put it into the database
       $stmt2 = $conn->prepare("INSERT INTO Users (FirstName,LastName,Email,Phone,Password) VALUES (?,?,?,?,?)");
       $stmt2->bind_param("sssss", $userFirstName,$userLastName,$userEmail,$userPhone,$userPassword);
 
       $stmt2->execute();
       $stmt2->close();
 
+      //Get the User just created to get the ID
       $stmt3 = $conn->prepare("SELECT * FROM Users WHERE Email = ?");
       $stmt3->bind_param("s", $userEmail);
       $stmt3 ->execute();
@@ -49,7 +64,7 @@ else
       
       $id = $row2["ID"];
 
-      
+      //Returns with the new user
       returnWithSuccess($id);
 
    }
@@ -69,12 +84,6 @@ function sendResultInfoAsJson( $obj )
    echo $obj;
 }
 
-function returnWithError( $err )
-{
-   $retValue = '{"UserID":"0","FirstName":"","LastName":"","Email":"","Phone":"","error":"' . $err . '"}';
-   //  sendResultInfoAsJson( $retValue );
-   echo "This Email already exists!";
-}
 
 function returnWithSuccess ($UserID )
 {

@@ -1,5 +1,15 @@
 <?php
 
+//Group 12
+//COP 4331
+//LAMP API getContacts
+
+/*
+   This api is used to get all the contacts of the user.
+   This takes an input json of the current user.
+   Then it returns all of the contacts that this user has.
+*/
+
 //Get JSON of the current user
 $inData = getRequestInfo();
 
@@ -16,6 +26,7 @@ $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 if ($conn->connect_error) 
 {
    returnWithError( $conn->connect_error );
+   http_response_code(403);
 } 
 else
 {
@@ -42,10 +53,6 @@ else
       //Echoes each contact as a JSON element
 
       array_push($allContacts,array( "ID" => $fetchedID ,"FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
-
-      
-
-
    }
 
    returnWithSuccess($allContacts);

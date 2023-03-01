@@ -1,22 +1,35 @@
 <?php
 
+//Group 12
+//COP 4331
+//LAMP API Login
 
+/*
+   This api is used for logging into the website.
+   This takes an input as json of just email and password.
+   Then returns the user that matches.
+*/
+
+//Gets data
 $inData = getRequestInfo();
 
+//Save as local variables
 $userLogin = $inData["Email"];
 $userPassword = $inData["Password"];
 
-
-
+//Connect to server
 $conn = new mysqli("localhost", "Tester", "Group12Rocks", "COP4331");
 
+//If there is an error return
 if ($conn->connect_error) 
 {
    returnWithError( $conn->connect_error );
+   http_response_code(403);
 } 
 
 else
 {
+   //Prepare statement to check for user
    $stmt1 = $conn->prepare("SELECT * FROM Users WHERE Email = ?");
    $stmt1->bind_param("s", $userLogin);
    $stmt1->execute();
@@ -24,6 +37,7 @@ else
 
    $stmt1->close();
 
+   //If there is a match get all the data associated
    if($row = $result->fetch_assoc())
    {
       $fetchedPassword = $row["Password"];
@@ -39,15 +53,13 @@ else
       }
       else
       {
-	 //returnWithError("The password you used was incorrect try again");
-	 echo "The password you used was incorrect try again";
+         http_response_code(401);
       }
 
    }
    else
    {
-	 //  returnWithError("This Email does not exist!");
-	 echo "This Email does not exist!";
+      http_response_code(401);
    }
 
 }
