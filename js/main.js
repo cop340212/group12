@@ -3,7 +3,6 @@
 function myFunction(userID) {
     var x = document.getElementById("searchInput").elements[0].value;
     var url = "https://codegojolt.xyz/LAMPAPI/";
-    userID = 33;
     getContacts(userID, url, x);
 }
 
@@ -74,3 +73,5 @@ function fillResponse(myObj) {
         displayTable.appendChild(newRow);
     }
 }
+
+document.addEventListener('DOMContentLoaded', myFunction(localStorage.getItem("userID")), false);
