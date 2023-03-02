@@ -59,7 +59,6 @@ function verifyLogin(email, password, url)
                         console.log(JSON.parse(this.responseText).ID);
                         localStorage.setItem("userID", JSON.parse(this.responseText).ID);
                         resolve(200);
-                        break;
                     case 401:
                         localStorage.setItem("userID", -1);
                         resolve(401);
@@ -73,7 +72,6 @@ function verifyLogin(email, password, url)
                         localStorage.setItem("userID", -1);
                         resolve(404);
                 }
-                this
             }
         };
         xmlhttp.open("POST", url, true);

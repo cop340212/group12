@@ -27,7 +27,7 @@
      <!-- Logo/Sign up inputs/Create account -->
 
     <main class="form-signin w-100 m-auto">
-    <form data-toggle="validator" action="./home/main.html">
+    <form data-toggle="validator" id="verification" action="javascript:signUpFunc()">
       <div style="height: 80px">
         <h1 class="h1 mb-80 fw-normal">Phone Book</h1>
       </div>
@@ -35,11 +35,23 @@
       <h1 class="h3 mb-3 fw-normal">Signup</h1>
 
       <div class="form-floating">
+        <input type="text" class="form-control" id="floatingFirst" placeholder="First" required>
+        <label for="floatingFirst">First Name</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="floatingLast" placeholder="Last" required>
+        <label for="floatingLast">Last Name</label>
+      </div>
+
+      <div class="form-floating">
         <input type="email" class="form-control" id="floatingEmail" placeholder="name@domain.com" required>
-        <label for="floatingEmail">Email address</label>
-        <div class="valid-feedback">
-          Valid Email
-        </div>
+        <label class="z-2" id ="floatinEmailLabel" for="floatingEmail">Email address</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="tel" class="form-control" id="floatingPhone" placeholder="(123)-456-7890" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
+        <label for="floatingPhone">US Phone Number</label>
       </div>
 
       <div class="form-floating">
@@ -51,9 +63,12 @@
         <input type="password" class="form-control"  id="floatingPasswordConfirm" data-match="#floatingPassword" data-match-error="Whoops, these don't match" placeholder="Repeat password" required>
         <label for="floatingPasswordConfirm">Repeat password</label>
       </div>
+
+      <p class="mt-3 mb-3 fst-italic fs-6 text-danger d-none" id="errorText">A user with that email already exists.</p>
+     
       
       <button type="submit" class="w-100 btn btn-lg btn-primary mb-1">
-        Sign in
+        Sign up
       </button>
 
       <a href="./index.html" class="btn btn-link mb-4" role="button">Already have an account?</a>

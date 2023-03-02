@@ -20,8 +20,38 @@ body {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-signin input[id="floatingFirst"] {
   margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[id="floatingLast"] {
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[id="floatingEmail"] {
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  position: relative;
+}
+
+.form-signin input[id="floatinEmailLabel"] {
+  position: relative;
+}
+
+.form-signin input[id="floatingPhone"] {
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
