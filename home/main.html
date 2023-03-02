@@ -13,7 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/a8852890f7.js" crossorigin="anonymous"></script>
     <script defer src="../js/main.js"></script>
-
     
     <!-- CSS Template -->
     <link href="../css/main.css" rel="stylesheet">
@@ -21,7 +20,7 @@
       <form id="searchInput" action="javascript:myFunction()">
         <div class="input-group rounded">
             <input type="search" class="form-control rounded"  placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-            <button type="button" class="btn btn-primary" onclick="myFunction()">
+            <button type="button" class="btn btn-primary" onclick='myFunction(localStorage.getItem("userID"))'>
               <i class="fas fa-search"></i>
             </button>
         </div>
@@ -89,34 +88,6 @@
         </tr>
       </thead>
       <tbody id="output-table-body">
-        <tr>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>motto@mdo.com</td>
-          <td>(123)-456-7890</td>
-          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
-            Manage
-          </button></td>
-          
-        </tr>
-        <tr>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>jacobthornton@32ft.com</td>
-          <td>(234)-567-8901</th>
-          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
-            Manage
-          </button></td>
-        </tr>
-        <tr>
-          <td>Larry</td>
-          <td>The Bird</td>
-          <td>fakeemail@jeemail.com</td>
-          <td>(345)-678-9012</th>
-          <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#aboutModal">
-            Manage
-          </button></td>
-        </tr>
       </tbody>
     </table>
   </body>

@@ -3,9 +3,8 @@
 function myFunction(userID) {
     var x = document.getElementById("searchInput").elements[0].value;
     var url = "https://codegojolt.xyz/LAMPAPI/";
-    userID = 33;
     getContacts(userID, url, x);
-  }
+}
 
 function getContacts(userId, url, search) {
     console.log("getting all contacts...");
@@ -50,11 +49,11 @@ function fillResponse(myObj) {
     var displayTable = document.getElementById('output-table-body');
     // Loop for each row in response
     for (let i=0; i < myObj.length; i++) {
-        var rec = [myObj[i].FirstName, myObj[i].LastName, myObj[i].Email, myObj[i].Phone];
+        var rec = [myObj[i].ID, myObj[i].FirstName, myObj[i].LastName, myObj[i].Email, myObj[i].Phone];
         // Begin new row
         let newCell, newRow = document.createElement("tr");
         // Loop for each column in record
-        for (let j=0; j < rec.length; j++) {
+        for (let j=1; j < rec.length; j++) {
             newCell = document.createElement("td");
             newCell.innerHTML = rec[j];
             newRow.appendChild(newCell);
@@ -74,3 +73,5 @@ function fillResponse(myObj) {
         displayTable.appendChild(newRow);
     }
 }
+
+document.addEventListener('DOMContentLoaded', myFunction(localStorage.getItem("userID")), false);
