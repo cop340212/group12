@@ -56,16 +56,24 @@ function verifyLogin(email, password, url)
                 switch(this.status)
                 {
                     case 200:
+                        console.log(JSON.parse(this.responseText).ID);
+                        localStorage.setItem("userID", JSON.parse(this.responseText).ID);
                         resolve(200);
+                        break;
                     case 401:
+                        localStorage.setItem("userID", -1);
                         resolve(401);
                     case 402:
+                        localStorage.setItem("userID", -1);
                         resolve(402);
                     case 403:
+                        localStorage.setItem("userID", -1);
                         resolve(403);
                     case 404:
+                        localStorage.setItem("userID", -1);
                         resolve(404);
                 }
+                this
             }
         };
         xmlhttp.open("POST", url, true);
