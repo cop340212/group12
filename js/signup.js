@@ -9,40 +9,56 @@ async function signUpFunc(userID)
     var emailPrompt = form.elements["floatingEmail"].value;
     var phonePrompt = form.elements["floatingPhone"].value;
     var passwordPrompt = form.elements["floatingPassword"].value;
-    var url = "https://codegojolt.xyz/LAMPAPI/";
-    const returnVal = await verifyLogin(firstPrompt,lastPrompt, emailPrompt, phonePrompt,passwordPrompt, url);
-    console.log(returnVal);
+    var confirmPrompt = form.elements["floatingPasswordConfirm"].value;
 
-    switch(returnVal)
+    var url = "https://codegojolt.xyz/LAMPAPI/";
+    if(passwordPrompt == confirmPrompt)
     {
-        case 200:
-            console.log("Redirecting to hardcoded: /home/main.html");
-            document.getElementById("floatingFirst").setAttribute("class", "form-control is-valid");
-            document.getElementById("floatingLast").setAttribute("class", "form-control is-valid");
-            document.getElementById("floatingEmail").setAttribute("class", "form-control is-valid");
-            document.getElementById("floatingPhone").setAttribute("class", "form-control is-valid");
-            document.getElementById("floatingPassword").setAttribute("class", "form-control is-valid");
-            document.getElementById("floatingPasswordConfirm").setAttribute("class", "form-control is-valid");
-            document.getElementById("errorText").setAttribute("class", "mt-3 mb-3 fst-italic fs-6 text-danger d-none");
-            location.href = '/home/main.html';
-            break;
-        case 401:
-            console.log("User Error: 401");
-            document.getElementById("floatingEmail").setAttribute("class", "form-control is-invalid z-1");
-            document.getElementById("errorText").setAttribute("class", "mt-3 mb-3 fst-italic fs-6 text-danger");
-            break;    
-        case 403:
-            console.log("Debug Error: 403");
-            break;
-        case 403:
-            console.log("Debug Error: 404");
-            break;
+        const returnVal = await verifyLogin(firstPrompt,lastPrompt, emailPrompt, phonePrompt,passwordPrompt, confirmPrompt, url);
+        console.log(returnVal);
+
+        document.getElementById("floatingPassword").setAttribute("class", "form-control");
+        document.getElementById("floatingPasswordConfirm").setAttribute("class", "form-control");
+
+        switch(returnVal)
+        {
+            case 200:
+                console.log("Redirecting to hardcoded: /home/main.html");
+                document.getElementById("floatingFirst").setAttribute("class", "form-control is-valid");
+                document.getElementById("floatingLast").setAttribute("class", "form-control is-valid");
+                document.getElementById("floatingEmail").setAttribute("class", "form-control is-valid");
+                document.getElementById("floatingPhone").setAttribute("class", "form-control is-valid");
+                document.getElementById("floatingPassword").setAttribute("class", "form-control is-valid");
+                document.getElementById("floatingPasswordConfirm").setAttribute("class", "form-control is-valid");
+                document.getElementById("errorText").setAttribute("class", "mt-3 mb-3 fst-italic fs-6 text-danger d-none");
+                location.href = '/home/main.html';
+                break;
+            case 401:
+                console.log("User Error: 401");
+                document.getElementById("floatingEmail").setAttribute("class", "form-control is-invalid z-1");
+                document.getElementById("errorText").setAttribute("class", "mt-3 mb-3 fst-italic fs-6 text-danger");
+                break;
+            case 403:
+                console.log("Debug Error: 403");
+                break;
+            case 404:
+                console.log("Debug Error: 404");
+                break;
+                
+        }
+    }
+    else
+    {
+        console.log("User Error: 402");
+        document.getElementById("floatingEmail").setAttribute("class", "form-control");
+        document.getElementById("floatingPassword").setAttribute("class", "form-control is-invalid z-1");
+        document.getElementById("floatingPasswordConfirm").setAttribute("class", "form-control is-invalid z-1");
     }
 }
 
-function verifyLogin(first, last, email, phone, password, url)
+function verifyLogin(first, last, email, phone, password, confirmPrompt, url)
 {
-    var xmlhttp, myObj, payload = {"Email": email, "Password": password};
+    var xmlhttp, payload = {"Email": email, "Password": password};
     url += "createUser.php";
     payload.FirstName = first;
     payload.LastName = last;
@@ -70,12 +86,15 @@ function verifyLogin(first, last, email, phone, password, url)
                     case 401:
                         localStorage.setItem("userID", -1);
                         resolve(401);
+                        break;
                     case 403:
                         localStorage.setItem("userID", -1);
                         resolve(403);
+                        break;
                     case 404:
                         localStorage.setItem("userID", -1);
                         resolve(404);
+                        break;
                 }
             }
         };
