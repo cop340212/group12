@@ -20,7 +20,7 @@
       <form id="searchInput" action="javascript:myFunction()">
         <div class="input-group rounded">
             <input type="search" class="form-control rounded"  placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-            <button type="button" class="btn btn-primary" onclick='myFunction(localStorage.getItem("userID"))'>
+            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Search" onclick='myFunction(localStorage.getItem("userID"))'>
               <i class="fas fa-search"></i>
             </button>
         </div>
@@ -36,7 +36,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="aboutModalLabel">Edit Contact Info</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" data-toggle="tooltip" data-placement="bottom" title="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -69,9 +69,9 @@
                 <!-- Form body end-->
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="delete" data-bs-dismiss="modal">Delete</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="delete" data-bs-dismiss="modal" data-toggle="tooltip" data-placement="bottom" title="Delete">Delete</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-toggle="tooltip" data-placement="bottom" title="Save">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-toggle="tooltip" data-placement="bottom" title="Close">Close</button>
           </div>
         </div>
       </div>
