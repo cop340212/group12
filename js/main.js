@@ -17,6 +17,9 @@ manageModal.addEventListener('show.bs.modal', event =>
             const lastName = button.parentElement.parentElement.childNodes[1].innerHTML;
             const email = button.parentElement.parentElement.childNodes[2].innerHTML;
             const phone = button.parentElement.parentElement.childNodes[3].innerHTML;
+            // Keep current modal record's ID in local storage for button function access
+            const rowID = button.parentElement.parentElement.getAttribute("id");
+            localStorage.setItem("currentModalContactID", Number.parseInt(rowID.substr(10)));
             // Update the modal's content.
             manageModal.querySelector('#firstInput').value = firstName;
             manageModal.querySelector('#lastInput').value = lastName;
@@ -63,18 +66,28 @@ function modalAddNew(userID) {
                     newID = JSON.parse(this.responseText).ID;
                     console.log(newID);
                     // Update modal with success message and switch to update mode
+                    document.getElementById("firstInput").setAttribute("class", "form-control is-valid");
+                    document.getElementById("lastInput").setAttribute("class", "form-control is-valid");
+                    document.getElementById("emailInput").setAttribute("class", "form-control is-valid");
+                    document.getElementById("phoneInput").setAttribute("class", "form-control is-valid");
                     document.getElementById("delete").classList.remove("visually-hidden");
-                    document.getElementById("saveUpdate").saveButton.innerHTML = "Save changes";
+                    document.getElementById("saveUpdate").innerHTML = "Save changes";
                     // Swap Contact ID for UserID and add new record to displayed results table
                     delete payload["UserID"];
                     payload["ID"] = newID;
                     myObj.push(payload);
                     let isLastShaded = document.getElementById('output-table-body').lastChild.classList.contains("table-light");
                     fillResponse(myObj, !isLastShaded);
+                    // Keep current modal record's ID in local storage for button function access
+                    localStorage.setItem("currentModalContactID", newID);
                     break;
                 // Contact already exists
                 case 401:
                     console.log("Error 401: Contact already exists");
+                    document.getElementById("firstInput").setAttribute("class", "form-control is-invalid");
+                    document.getElementById("lastInput").setAttribute("class", "form-control is-invalid");
+                    document.getElementById("emailInput").setAttribute("class", "form-control is-invalid");
+                    document.getElementById("phoneInput").setAttribute("class", "form-control is-invalid");
                     break;
                 // Could Not Connect to Database
                 case 403:
@@ -86,7 +99,7 @@ function modalAddNew(userID) {
                     break;
                 // \o/
                 default:
-                    console.log("What did you do to get here?!")
+                    console.log("[Add Contact]: What did you do to get here?!")
             }
         }
     };
@@ -95,7 +108,7 @@ function modalAddNew(userID) {
 }
 
 function modalUpdate(userID) {
-    if (document.getElementById("saveUpdate").innerHTML = "Save")
+    if (document.getElementById("saveUpdate").innerHTML == "Save")
     // Modal reached by clicking "New Contact" button
     {
         modalAddNew(userID);
@@ -103,18 +116,79 @@ function modalUpdate(userID) {
     else
     // Modal reached by clicking "Manage" button in a contact record
     {
-
+        console.log("Entered update code...");
     }
 }
 
 function modalDelete(userID) {
+    // Grab data fields from modal (and ID from corresponding DOM element)
+    const firstName = manageModal.querySelector('#firstInput').value;
+    const lastName = manageModal.querySelector('#lastInput').value;
+    const email = manageModal.querySelector('#emailInput').value;
+    const phone = manageModal.querySelector('#phoneInput').value;
 
+    // Get ID for corresponding DOM element
+    const contactID = localStorage.getItem("currentModalContactID");
+
+    // Build POST request
+    var url = "https://codegojolt.xyz/LAMPAPI/deleteContacts.php";
+    console.log(`deleting contact ID ${contactID}...`);
+    var xmlhttp, myObj;
+    var payload = {"ID": contactID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": phone, "UserID": userID};
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function()
+    {
+        if (this.readyState == 4) 
+        {
+            switch(this.status)
+            {
+                // OK
+                case 200:
+                    myObj = JSON.parse(this.responseText);
+                    console.log(`Successfully deleted (${myObj["ID"]}) ${myObj["FirstName"]} ${myObj["LastName"]}, ${myObj["Email"]}, ${myObj["Phone"]}`);
+                    // Update modal with success message and switch to add mode
+                    document.getElementById("delete").classList.add("visually-hidden");
+                    document.getElementById("saveUpdate").innerHTML = "Save";
+                    // Clear the modal's content.
+                    manageModal.querySelector('#firstInput').value = "";
+                    manageModal.querySelector('#lastInput').value = "";
+                    manageModal.querySelector('#emailInput').value = "";
+                    manageModal.querySelector('#phoneInput').value = "";
+                    // Clear local storage contact ID
+                    localStorage.removeItem("currentModalContactID");
+                    // Delete this contact's row in DOM table
+                    let delRow = document.getElementById("contactNum" + myObj["ID"].toString());
+                    document.getElementById('output-table-body').removeChild(delRow);
+                    break;
+                // Could Not Connect to Database
+                case 403:
+                    console.log("Error 401: Could Not Connect to Database");
+                    break;
+                // URL Not Found
+                case 404:
+                    console.log("Error 401: URL Not Found");
+                    break;
+                // \o/
+                default:
+                    console.log("[Delete Contact]: What did you do to get here?!")
+            }
+        }
+    };
+    xmlhttp.open("POST", url, true);
+    xmlhttp.send(JSON.stringify(payload));
 }
 
 function myFunction(userID) {
-    var x = document.getElementById("searchInput").elements[0].value;
-    var url = "https://codegojolt.xyz/LAMPAPI/";
-    getContacts(userID, url, x);
+    console.log(`myFunction called with userID = ${userID}`);
+    if (!userID)
+    {
+        window.location.replace("https://codegojolt.xyz/");
+    }
+    else {
+        var x = document.getElementById("searchInput").elements[0].value;
+        var url = "https://codegojolt.xyz/LAMPAPI/";
+        getContacts(userID, url, x);
+    }
 }
 
 function getContacts(userID, url, search) {
