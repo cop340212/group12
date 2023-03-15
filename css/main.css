@@ -13,8 +13,21 @@ body {
 }
 
 .main-search {
-  max-width: 360px;
+  display:flex;
+  max-width: 480px;
   padding: 15px;
+}
+
+#addNewContactButton{
+  float:left; 
+  display:inline;
+  width: 175px;
+  white-space: nowrap;
+}
+#searchInput{
+  float:left; 
+  display:inline;
+  width: 75%;
 }
 
 th, td {
