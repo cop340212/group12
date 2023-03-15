@@ -27,14 +27,14 @@
      <!-- Logo/Sign up inputs/Create account -->
 
     <main class="form-signin w-100 m-auto">
-    <form data-toggle="validator" id="verification" action="javascript:signUpFunc()">
+    <form id="verification" action="javascript:signUpFunc()" data-disable="false">
       <div style="height: 80px">
         <h1 class="h1 mb-80 fw-normal">Phone Book</h1>
       </div>
       <img class="mb-4" src="./resources/logos/Free-Phone-Clip-Art.png" alt="" width="96" height="96">
       <h1 class="h3 mb-3 fw-normal">Signup</h1>
 
-      <div class="form-floating">
+      <div class="form-floating has-feedback">
         <input type="text" class="form-control" id="floatingFirst" placeholder="First" required>
         <label for="floatingFirst">First Name</label>
       </div>
@@ -53,31 +53,33 @@
         <input type="tel" class="form-control" id="floatingPhone" placeholder="(123)-456-7890" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
         <label for="floatingPhone">US Phone Number</label>
       </div>
-
-      <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
-        <label for="floatingPassword">Password</label>
-      </div>
-
-      <div class="form-floating">
-        <input type="password" class="form-control"  id="floatingPasswordConfirm" data-match="#floatingPassword" data-match-error="Whoops, these don't match" placeholder="Repeat password" required>
-        <label for="floatingPasswordConfirm">Repeat password</label>
+      <div class="form-group" >
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+          <label for="floatingPassword">Password</label>
+        </div>
+        
+        <div class="form-floating">
+          <input type="password" class="form-control"  id="floatingPasswordConfirm" data-match="#floatingPassword" data-match-error="Whoops, these don't match" placeholder="Repeat password" required>
+          <label for="floatingPasswordConfirm">Repeat password</label>
+        </div>
       </div>
 
       <p class="mt-3 mb-3 fst-italic fs-6 text-danger d-none" id="errorText">A user with that email already exists.</p>
      
-      
-      <button type="submit" class="w-100 btn btn-lg btn-primary mb-1">
-        Sign up
-      </button>
+      <div class="form-group">
+        <button type="submit" class="w-100 btn btn-lg btn-primary mb-1" data-toggle="tooltip" data-placement="bottom" title="Submit">
+          Sign up
+        </button>
+      </div>
 
-      <a href="./index.html" class="btn btn-link mb-4" role="button">Already have an account?</a>
+      <a href="./index.html" class="btn btn-link mb-4" role="button" data-toggle="tooltip" data-placement="bottom" title="Login">Already have an account?</a>
     </div>
 
     <!-- About modal -->
 
     <div>
-      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#aboutModal">
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#aboutModal" data-toggle="tooltip" data-placement="top" title="About">
         About
       </button>
       <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
