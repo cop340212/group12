@@ -77,10 +77,13 @@ body {
 }
 
 
-/*#searchPrompt{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}*/
+#buttonMessages{
+  display: flex;
+  align-items: center;
+  width:100%;
+  word-break: break-all;
+  white-space: normal;
+}
 
 th, td {
   padding-top: 25px;
