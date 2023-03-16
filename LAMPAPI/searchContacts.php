@@ -52,8 +52,9 @@ else
       $fetchedLastName = $row["LastName"];
       $fetchedEmail = $row["Email"];
       $fetchedPhone = $row["Phone"];
+      $fetchedID = $row["ID"];
       //Push each contact to an array to return later
-      array_push($allContacts, array("FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
+      array_push($allContacts, array("ID" => $fetchedID, "FirstName" => $fetchedFirstName, "LastName" => $fetchedLastName, "Email" => $fetchedEmail, "Phone" => $fetchedPhone));
 
 
    }
