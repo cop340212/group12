@@ -17,6 +17,7 @@
     <!-- CSS Template -->
     <link href="../css/main.css" rel="stylesheet">
     <main class="main-search position-absolute top-0 start-50 translate-middle-x">
+      <div class="nav-bar">
       <button type="button" id="addNewContactButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aboutModal">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -25,13 +26,14 @@
         New Contact
       </button>  
       <form id="searchInput" action="javascript:myFunction()">
-        <div class="input-group rounded">
-            <input type="search" class="form-control rounded"  placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Search" onclick='myFunction(localStorage.getItem("userID"))'>
+        <div class="input-group rounded d-flex justify-content-centered sticky-top">
+            <input id="searchPrompt" type="search" class="form-control rounded"  placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <button type="button" class=" btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Search" onclick='myFunction(localStorage.getItem("userID"))'>
               <i class="fas fa-search"></i>
             </button>
         </div>
       </form>
+      </div>
       <p id="results"></p>
     </main>
   </head>
@@ -95,10 +97,8 @@
           <th class="th-lg">Manage</th>
         </tr>
       </thead>
-      <tbody id="output-table-body"> <!-- idk y but this has to stay -->
+      <tbody id="output-table-body">
       </tbody>
     </table>
   </body>
 </html>
-  
-  
