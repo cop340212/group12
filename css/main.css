@@ -1,6 +1,6 @@
-html,
-body {
+html,body {
   height: 100%;
+  overflow: auto;
 }
 
 body {
@@ -14,20 +14,26 @@ body {
 
 .main-search {
   display:flex;
-  height:100%;
   align-items: flex-start;
   justify-content: center;
+  margin-left: 20%;
   max-width: 920px;
   min-width: 325px;
   padding-top: 20px;
 }
 
-.main-logout{
+.main-logout {
   display:flex;
+  align-items: flex-start;
   justify-content: flex-end;
-  position: sticky;
-  top:0;
-  right:0;
+  min-width: 325px;
+  margin-left: 75%;
+  padding-left: 150px;
+  padding-right: 25px;
+}
+
+#searchInput{
+  min-width:175px;
 }
 
 .nav-bar{
@@ -46,13 +52,9 @@ body {
   z-index: 2
 }
 
-.main-logout{
-  margin-left: 200px;
-  padding-left: 350px;
-}
-
 .nav-bar-logout{
   position: sticky;
+  top: 10px;
   margin-top: 20px;
   margin-right: 50px;
   padding: 10px;
@@ -62,6 +64,7 @@ body {
   border-right:solid rgb(151, 146, 146) 1px;
   border-bottom:solid rgb(151, 146, 146) 1px;
   border-top:solid rgb(151, 146, 146) 1px;
+  float:left;
   display:flex;
   min-width: 100px;
   z-index: 2
@@ -75,6 +78,67 @@ body {
   margin-right: 3%;
   white-space: nowrap;
 }
+
+#addCondensedNewContactButton{
+  float:none; 
+  display:none;
+  width: 42%;
+  max-width: 40px;
+  margin-right: 3%;
+  white-space: nowrap;
+}
+
+#resultTable{
+  font-size: 100%;
+  max-width: 80%;
+  white-space: nowrap;
+}
+
+#manageButton{
+  font-size: 100%;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 760px) 
+{
+  
+  .main-logout{
+    margin-left: calc(20% + 435px);
+  }
+  .main-search
+  {
+    margin-left: calc(20% + 35px);
+    max-width: 245px;
+    min-width: 245px;
+  }
+  .nav-bar
+  {
+    max-width: 245px;
+    min-width: 245px;
+  }
+  .th-lg{
+    white-space: pre;
+  }
+  #addNewContactButton
+  {
+    float:none; 
+    display:none;
+  }
+  #addCondensedNewContactButton
+  {
+    float:left; 
+    display:inline;
+  }
+  #resultTable{
+    font-size: 85%;
+    white-space: normal;
+    overflow-wrap: break-word; 
+  }
+  #manageButton{
+    font-size: 100%;
+  }
+}
+
 #searchInput{
   float:left; 
   display:inline;
@@ -134,10 +198,9 @@ table {
   display: flex;
   align-items: center;
   position: absolute;
-  top:90.375%;
-  right: 81.5%;
+  margin-left:25px;
+  margin-right:75%;
   width: 72px;
-  transform: translateY(-50%);
 }
 
 .position-relative {

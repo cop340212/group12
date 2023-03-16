@@ -335,6 +335,7 @@ function fillResponse(myObj, makeFirstShaded) {
         newCell = document.createElement("td");
         let modalButton = document.createElement("button");
         modalButton.type = "button";
+        modalButton.setAttribute("id", "manageButton");
         modalButton.setAttribute("class", "btn btn-link myManageModalButton");
         modalButton.setAttribute("data-bs-toggle", "modal");
         modalButton.setAttribute("data-bs-target", "#aboutModal");
