@@ -228,7 +228,7 @@ function myFunction(userID) {
     console.log(`myFunction called with userID = ${userID}`);
     if (!userID)
     {
-        window.location.replace("https://codegojolt.xyz/");
+        //window.location.replace("https://codegojolt.xyz/");
     }
     else {
         var x = document.getElementById("searchInput").elements[0].value;

@@ -6,7 +6,7 @@ body {
 body {
   display: flex;
 	align-items: flex-start;
-  padding-top: 60px;
+  padding-top: 90px;
   padding-bottom: 40px;
   justify-content: center;
   background-color: #f5f5f5;
@@ -14,26 +14,76 @@ body {
 
 .main-search {
   display:flex;
-  max-width: 720px;
-  padding: 15px;
+  height:100%;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 920px;
+  min-width: 325px;
+  padding-top: 20px;
+}
+
+.main-logout{
+  display:flex;
+  justify-content: flex-end;
+  position: sticky;
+  top:0;
+  right:0;
+}
+
+.nav-bar{
+  position: sticky;
+  top: 10px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  border-left:solid rgb(151, 146, 146) 1px;
+  border-right:solid rgb(151, 146, 146) 1px;
+  border-bottom:solid rgb(151, 146, 146) 1px;
+  border-top:solid rgb(151, 146, 146) 1px;
+  display:flex;
+  max-width: 920px;
+  min-width: 325px;
+  padding: 10px;
+  z-index: 2
+}
+
+.nav-bar-logout{
+  position: sticky;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  border-left:solid rgb(151, 146, 146) 1px;
+  border-right:solid rgb(151, 146, 146) 1px;
+  border-bottom:solid rgb(151, 146, 146) 1px;
+  border-top:solid rgb(151, 146, 146) 1px;
+  display:flex;
+  min-width: 100px;
+  z-index: 2
 }
 
 #addNewContactButton{
   float:left; 
   display:inline;
-  width: 175px;
+  width: 42%;
+  min-width: 150px;
+  margin-right: 3%;
   white-space: nowrap;
-  padding-right: 25px;
-  margin-right: 25px;
 }
 #searchInput{
   float:left; 
   display:inline;
-  width: 75%;
+  width: 68%;
 }
 
+
+/*#searchPrompt{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}*/
+
 th, td {
-  padding-top: 10px;
+  padding-top: 25px;
   padding-bottom: 20px;
   padding-left: 30px;
   padding-right: 40px;
