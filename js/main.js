@@ -1,6 +1,14 @@
 "use strict";
 
 const manageModal = document.getElementById('aboutModal');
+const modalAddNewHeader = "Add New Contact";
+const modalEditExistingHeader = "Edit Contact Info";
+const modalSaveNewButtonText = "Save";
+const modalSaveUpdatesButtonText = "Save changes";
+const error403Message = "Error 403: Could Not Connect to Database. Please try again.";
+const error404Message = "Error 404: URL Not Found. Please make sure you are connected to the internet and try again.";
+const errorUnknown = "Unknown Error: You should not see this message. We are doomed.";
+
 // Function to update modal contents with corresponding record data
 manageModal.addEventListener('show.bs.modal', event =>
     {
@@ -8,8 +16,15 @@ manageModal.addEventListener('show.bs.modal', event =>
         const button = event.relatedTarget;
         let saveButton = document.getElementById("saveUpdate");
 
+        // Hide message text area
+        if (!document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+            document.getElementById("buttonMessages").classList.add("visually-hidden");
+        }
+
         // Check if editing existing contact (Manage button)
         if (button.classList.contains("myManageModalButton")) {
+            // Update header
+            document.getElementById("aboutModalLabel").innerHTML = modalEditExistingHeader;
             // Make sure Delete button is showing
             document.getElementById("delete").classList.remove("visually-hidden");
             // Extract info from row fields
@@ -26,7 +41,7 @@ manageModal.addEventListener('show.bs.modal', event =>
             manageModal.querySelector('#emailInput').value = email;
             manageModal.querySelector('#phoneInput').value = phone;
             // Use more appropriate action word
-            saveButton.innerHTML = "Save changes";
+            saveButton.innerHTML = modalSaveUpdatesButtonText;
         }
         // Otherwise we opened modal with add new contact button
         else {
@@ -36,18 +51,28 @@ manageModal.addEventListener('show.bs.modal', event =>
             manageModal.querySelector('#emailInput').value = "";
             manageModal.querySelector('#phoneInput').value = "";
             // Update and hide button text for relevance
-            saveButton.innerHTML = "Save";
+            document.getElementById("aboutModalLabel").innerHTML = modalAddNewHeader;
+            saveButton.innerHTML = modalSaveNewButtonText;
             document.getElementById("delete").classList.add("visually-hidden");
         }
     }
 )
 
+// Logout function to clear local storage of userID and return user to signup/sign-in page
+function userLogout() {
+    localStorage.removeItem("userID");
+    location.reload();
+}
+
+// Function called by modal saveUpdate button to add a new contact to a user's contacts list
 function modalAddNew(userID) {
     // Grab data fields from modal
     const firstName = manageModal.querySelector('#firstInput').value;
     const lastName = manageModal.querySelector('#lastInput').value;
     const email = manageModal.querySelector('#emailInput').value;
     const phone = manageModal.querySelector('#phoneInput').value;
+
+    // Validate Email and Phone format
 
     // Build POST request
     var url = "https://codegojolt.xyz/LAMPAPI/createContact.php";
@@ -59,19 +84,28 @@ function modalAddNew(userID) {
     {
         if (this.readyState == 4) 
         {
+            // Make response text area visible
+            if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+                document.getElementById("buttonMessages").classList.remove("visually-hidden");
             switch(this.status)
             {
                 // OK
                 case 200:
                     newID = JSON.parse(this.responseText).ID;
-                    console.log(newID);
+                    console.log(`New contact created with ID = ${newID}`);
                     // Update modal with success message and switch to update mode
-                    document.getElementById("firstInput").setAttribute("class", "form-control is-valid");
-                    document.getElementById("lastInput").setAttribute("class", "form-control is-valid");
-                    document.getElementById("emailInput").setAttribute("class", "form-control is-valid");
-                    document.getElementById("phoneInput").setAttribute("class", "form-control is-valid");
+                    document.getElementById("buttonMessagesTextArea").value = firstName + " was successfully added to your contacts.";
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-valid");
+                    if (document.getElementById("firstInput").hasAttribute("is-invalid"))
+                        document.getElementById("firstInput").setAttribute("class", "form-control is-valid");
+                    if (document.getElementById("lastInput").hasAttribute("is-invalid"))
+                        document.getElementById("lastInput").setAttribute("class", "form-control is-valid");
+                    if (document.getElementById("emailInput").hasAttribute("is-invalid"))
+                        document.getElementById("emailInput").setAttribute("class", "form-control is-valid");
+                    if (document.getElementById("phoneInput").hasAttribute("is-invalid"))
+                        document.getElementById("phoneInput").setAttribute("class", "form-control is-valid");
                     document.getElementById("delete").classList.remove("visually-hidden");
-                    document.getElementById("saveUpdate").innerHTML = "Save changes";
+                    document.getElementById("saveUpdate").innerHTML = modalSaveUpdatesButtonText;
                     // Swap Contact ID for UserID and add new record to displayed results table
                     delete payload["UserID"];
                     payload["ID"] = newID;
@@ -83,23 +117,30 @@ function modalAddNew(userID) {
                     break;
                 // Contact already exists
                 case 401:
-                    console.log("Error 401: Contact already exists");
+                    console.log("[Add Contact] Error 401: Contact already exists");
+                    document.getElementById("buttonMessagesTextArea").value = firstName + " " + lastName + " already exists in your contacts with phone number " + phone;
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-invalid");
                     document.getElementById("firstInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("lastInput").setAttribute("class", "form-control is-invalid");
-                    document.getElementById("emailInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("phoneInput").setAttribute("class", "form-control is-invalid");
                     break;
                 // Could Not Connect to Database
                 case 403:
-                    console.log("Error 401: Could Not Connect to Database");
+                    console.log("[Add Contact] Error 403: Could Not Connect to Database");
+                    document.getElementById("buttonMessagesTextArea").value = error403Message;
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-invalid");
                     break;
                 // URL Not Found
                 case 404:
-                    console.log("Error 401: URL Not Found");
+                    console.log("[Add Contact] Error 404: URL Not Found");
+                    document.getElementById("buttonMessagesTextArea").value = error404Message;
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-invalid");
                     break;
                 // \o/
                 default:
-                    console.log("[Add Contact]: What did you do to get here?!")
+                    console.log("[Add Contact] Unknown Error: What did you do to get here?!")
+                    document.getElementById("buttonMessagesTextArea").value = errorUnknown;
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-invalid");
             }
         }
     };
@@ -108,7 +149,7 @@ function modalAddNew(userID) {
 }
 
 function modalUpdate(userID) {
-    if (document.getElementById("saveUpdate").innerHTML == "Save")
+    if (document.getElementById("saveUpdate").innerHTML == modalSaveNewButtonText)
     // Modal reached by clicking "New Contact" button
     {
         modalAddNew(userID);
@@ -147,8 +188,13 @@ function modalDelete(userID) {
                     myObj = JSON.parse(this.responseText);
                     console.log(`Successfully deleted (${myObj["ID"]}) ${myObj["FirstName"]} ${myObj["LastName"]}, ${myObj["Email"]}, ${myObj["Phone"]}`);
                     // Update modal with success message and switch to add mode
+                    document.getElementById("buttonMessagesTextArea").value = myObj["FirstName"] + " was successfully removed from your contacts.";
+                    document.getElementById("buttonMessagesTextArea").classList.add("is-valid");
+                    if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+                        document.getElementById("buttonMessages").classList.remove("visually-hidden");
+                    document.getElementById("aboutModalLabel").innerHTML = modalAddNewHeader;
                     document.getElementById("delete").classList.add("visually-hidden");
-                    document.getElementById("saveUpdate").innerHTML = "Save";
+                    document.getElementById("saveUpdate").innerHTML = modalSaveNewButtonText;
                     // Clear the modal's content.
                     manageModal.querySelector('#firstInput').value = "";
                     manageModal.querySelector('#lastInput').value = "";
@@ -162,15 +208,15 @@ function modalDelete(userID) {
                     break;
                 // Could Not Connect to Database
                 case 403:
-                    console.log("Error 401: Could Not Connect to Database");
+                    console.log("[Delete Contact] Error 403: Could Not Connect to Database");
                     break;
                 // URL Not Found
                 case 404:
-                    console.log("Error 401: URL Not Found");
+                    console.log("[Delete Contact] Error 404: URL Not Found");
                     break;
                 // \o/
                 default:
-                    console.log("[Delete Contact]: What did you do to get here?!")
+                    console.log("[Delete Contact] Unknown Error: What did you do to get here?!")
             }
         }
     };
