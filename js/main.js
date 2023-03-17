@@ -11,7 +11,6 @@ const errorUnknown = "Unknown Error: You should not see this message. We are doo
 
 // Function to update modal contents with corresponding record data
 manageModal.addEventListener('show.bs.modal', event => 
-{
     {
         // Button that triggered the modal
         const button = event.relatedTarget;
@@ -20,7 +19,6 @@ manageModal.addEventListener('show.bs.modal', event =>
         // Hide message text area
         if (!document.getElementById("buttonMessages").classList.contains("visually-hidden"))
             document.getElementById("buttonMessages").classList.add("visually-hidden");
-        }
 
         // Check if editing existing contact (Manage button)
         if (button.classList.contains("myManageModalButton")) {
@@ -264,7 +262,7 @@ function myFunction(userID) {
     console.log(`myFunction called with userID = ${userID}`);
     if (!userID)
     {
-        //window.location.replace("https://codegojolt.xyz/");
+        window.location.replace("https://codegojolt.xyz/");
     }
     else {
         var x = document.getElementById("searchInput").elements[0].value;
