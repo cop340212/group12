@@ -7,6 +7,7 @@ const modalSaveNewButtonText = "Save";
 const modalSaveUpdatesButtonText = "Save changes";
 const error403Message = "Error 403: Could Not Connect to Database. Please try again.";
 const error404Message = "Error 404: URL Not Found. Please make sure you are connected to the internet and try again.";
+const error405Message = "Error 405: Unknown Database Error, possibly due to updated contact info already matching an existing contact.";
 const errorUnknown = "Unknown Error: You should not see this message. We are doomed.";
 
 // Function to update modal contents with corresponding record data
@@ -15,6 +16,24 @@ manageModal.addEventListener('show.bs.modal', event =>
         // Button that triggered the modal
         const button = event.relatedTarget;
         let saveButton = document.getElementById("saveUpdate");
+
+        // Clear valid/invalid classes from from
+        if (document.getElementById("firstInput").classList.contains("is-invalid"))
+            document.getElementById("firstInput").classList.remove("is-invalid");
+        if (document.getElementById("lastInput").classList.contains("is-invalid"))
+            document.getElementById("lastInput").classList.remove("is-invalid");
+        if (document.getElementById("emailInput").classList.contains("is-invalid"))
+            document.getElementById("emailInput").classList.remove("is-invalid");
+        if (document.getElementById("phoneInput").classList.contains("is-invalid"))
+            document.getElementById("phoneInput").classList.remove("is-invalid");
+        if (document.getElementById("firstInput").classList.contains("is-valid"))
+            document.getElementById("firstInput").classList.remove("is-valid");
+        if (document.getElementById("lastInput").classList.contains("is-valid"))
+            document.getElementById("lastInput").classList.remove("is-valid");
+        if (document.getElementById("emailInput").classList.contains("is-valid"))
+            document.getElementById("emailInput").classList.remove("is-valid");
+        if (document.getElementById("phoneInput").classList.contains("is-valid"))
+            document.getElementById("phoneInput").classList.remove("is-valid");
 
         // Hide message text area
         if (!document.getElementById("buttonMessages").classList.contains("visually-hidden"))
@@ -93,7 +112,7 @@ function modalAddNew(userID) {
                     newID = JSON.parse(this.responseText).ID;
                     console.log(`New contact created with ID = ${newID}`);
                     // Update modal with success message and switch to update mode
-                    document.getElementById("buttonMessages").textContent = firstName + " was successfully added to your contacts.";
+                    document.getElementById("buttonMessages").innerHTML = firstName + " was successfully added to your contacts.";
                     if (!document.getElementById("buttonMessages").classList.contains("text-success"))
                     {
                         document.getElementById("buttonMessages").classList.add("text-success");
@@ -124,13 +143,13 @@ function modalAddNew(userID) {
                 // Contact already exists
                 case 401:
                     console.log("[Add Contact] Error 401: Contact already exists");
-                    document.getElementById("buttonMessages").textContent = firstName + " " + lastName + " already exists in your contacts with phone number " + phone;
+                    document.getElementById("buttonMessages").innerHTML = firstName + " " + lastName + " already exists in your contacts with phone number " + phone;
                     if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                     {
-                        document.getElementById("buttonMessages").classList.remove("text-success");
+                        document.getElementById("buttonMessages").classList.add("text-danger");
                         if (document.getElementById("buttonMessages").classList.contains("text-success"))
                         {
-                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            document.getElementById("buttonMessages").classList.remove("text-success");
                         }
                     }
                     document.getElementById("firstInput").setAttribute("class", "form-control is-invalid");
@@ -140,39 +159,39 @@ function modalAddNew(userID) {
                 // Could Not Connect to Database
                 case 403:
                     console.log("[Add Contact] Error 403: Could Not Connect to Database");
-                    document.getElementById("buttonMessages").textContent = error403Message;
+                    document.getElementById("buttonMessages").innerHTML = error403Message;
                     if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                     {
-                        document.getElementById("buttonMessages").classList.remove("text-success");
+                        document.getElementById("buttonMessages").classList.add("text-danger");
                         if (document.getElementById("buttonMessages").classList.contains("text-success"))
                         {
-                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            document.getElementById("buttonMessages").classList.remove("text-success");
                         }
                     }
                     break;
                 // URL Not Found
                 case 404:
                     console.log("[Add Contact] Error 404: URL Not Found");
-                    document.getElementById("buttonMessages").textContent = error404Message;
+                    document.getElementById("buttonMessages").innerHTML = error404Message;
                     if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                     {
-                        document.getElementById("buttonMessages").classList.remove("text-success");
+                        document.getElementById("buttonMessages").classList.add("text-danger");
                         if (document.getElementById("buttonMessages").classList.contains("text-success"))
                         {
-                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            document.getElementById("buttonMessages").classList.remove("text-success");
                         }
                     }
                     break;
                 // \o/
                 default:
                     console.log("[Add Contact] Unknown Error: What did you do to get here?!")
-                    document.getElementById("buttonMessages").textContent = errorUnknown;
+                    document.getElementById("buttonMessages").innerHTML = errorUnknown;
                     if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                     {
-                        document.getElementById("buttonMessages").classList.remove("text-success");
+                        document.getElementById("buttonMessages").classList.add("text-danger");
                         if (document.getElementById("buttonMessages").classList.contains("text-success"))
                         {
-                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            document.getElementById("buttonMessages").classList.remove("text-success");
                         }
                     }
             }
@@ -191,7 +210,105 @@ function modalUpdate(userID) {
     else
     // Modal reached by clicking "Manage" button in a contact record
     {
-        console.log("Entered update code...");
+        // Grab data fields from modal (and ID from corresponding DOM element)
+        const firstName = manageModal.querySelector('#firstInput').value;
+        const lastName = manageModal.querySelector('#lastInput').value;
+        const email = manageModal.querySelector('#emailInput').value;
+        const phone = manageModal.querySelector('#phoneInput').value;
+
+        // Get ID for corresponding DOM element
+        const contactID = localStorage.getItem("currentModalContactID");
+
+        // Build POST request
+        var url = "https://codegojolt.xyz/LAMPAPI/updateContact.php";
+        console.log(`updating contact ID ${contactID}...`);
+        var xmlhttp, myObj;
+        var payload = {"ID": contactID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": phone};
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function()
+        {
+            if (this.readyState == 4) 
+            {
+                if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+                document.getElementById("buttonMessages").classList.remove("visually-hidden");
+                switch(this.status)
+                {
+                    // OK
+                    case 200:
+                        myObj = JSON.parse(this.responseText);
+                        console.log(`Successfully updated (${myObj["ID"]}); saved as ${myObj["FirstName"]} ${myObj["LastName"]}, ${myObj["Email"]}, ${myObj["Phone"]}`);
+                        // Update modal with success message and switch to add mode
+                        document.getElementById("buttonMessages").innerHTML = myObj["FirstName"] + " was successfully updated in your contacts.";
+                        if (!document.getElementById("buttonMessages").classList.contains("text-success"))
+                        {
+                            document.getElementById("buttonMessages").classList.add("text-success");
+                            if (document.getElementById("buttonMessages").classList.contains("text-danger"))
+                            {
+                                document.getElementById("buttonMessages").classList.remove("text-danger");
+                            }
+                        }
+                        // Update this contact's row in DOM table
+                        let updateRow = document.getElementById("contactNum" + myObj["ID"].toString());
+                        updateRow.childNodes[0].innerHTML = myObj["FirstName"];
+                        updateRow.childNodes[1].innerHTML = myObj["LastName"];
+                        updateRow.childNodes[2].innerHTML = myObj["Email"];
+                        updateRow.childNodes[3].innerHTML = myObj["Phone"];
+                        break;
+                    // Could Not Connect to Database
+                    case 403:
+                        console.log("[Update Contact] Error 403: Could Not Connect to Database");
+                        document.getElementById("buttonMessages").innerHTML = error403Message;
+                        if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                        {
+                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                            {
+                                document.getElementById("buttonMessages").classList.remove("text-success");
+                            }
+                        }
+                        break;
+                        // URL Not Found
+                    case 404:
+                        console.log("[Update Contact] Error 404: URL Not Found");
+                        document.getElementById("buttonMessages").innerHTML = error404Message;
+                        if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                        {
+                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                            {
+                                document.getElementById("buttonMessages").classList.remove("text-success");
+                            }
+                        }
+                        break;
+                        case 405:
+                            console.log("[Update Contact] Error 405: Unknown database error");
+                            document.getElementById("buttonMessages").innerHTML = error405Message;
+                            if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                            {
+                                document.getElementById("buttonMessages").classList.add("text-danger");
+                                if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                                {
+                                    document.getElementById("buttonMessages").classList.remove("text-success");
+                                }
+                            }
+                            break;
+                            // \o/
+                    default:
+                        console.log("[Update Contact] Unknown Error: What did you do to get here?!")
+                        document.getElementById("buttonMessages").innerHTML = errorUnknown;
+                        if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                        {
+                            document.getElementById("buttonMessages").classList.add("text-danger");
+                            if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                            {
+                                document.getElementById("buttonMessages").classList.remove("text-success");
+                            }
+                        }
+                    }
+            }
+        };
+        xmlhttp.open("POST", url, true);
+        xmlhttp.send(JSON.stringify(payload));
     }
 }
 
@@ -215,6 +332,8 @@ function modalDelete(userID) {
     {
         if (this.readyState == 4) 
         {
+            if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+            document.getElementById("buttonMessages").classList.remove("visually-hidden");
             switch(this.status)
             {
                 // OK
@@ -222,10 +341,15 @@ function modalDelete(userID) {
                     myObj = JSON.parse(this.responseText);
                     console.log(`Successfully deleted (${myObj["ID"]}) ${myObj["FirstName"]} ${myObj["LastName"]}, ${myObj["Email"]}, ${myObj["Phone"]}`);
                     // Update modal with success message and switch to add mode
-                    document.getElementById("buttonMessagesTextArea").value = myObj["FirstName"] + " was successfully removed from your contacts.";
-                    document.getElementById("buttonMessagesTextArea").classList.add("is-valid");
-                    if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
-                        document.getElementById("buttonMessages").classList.remove("visually-hidden");
+                    document.getElementById("buttonMessages").innerHTML = myObj["FirstName"] + " was successfully removed from your contacts.";
+                    if (!document.getElementById("buttonMessages").classList.contains("text-success"))
+                    {
+                        document.getElementById("buttonMessages").classList.add("text-success");
+                        if (document.getElementById("buttonMessages").classList.contains("text-danger"))
+                        {
+                            document.getElementById("buttonMessages").classList.remove("text-danger");
+                        }
+                    }
                     document.getElementById("aboutModalLabel").innerHTML = modalAddNewHeader;
                     document.getElementById("delete").classList.add("visually-hidden");
                     document.getElementById("saveUpdate").innerHTML = modalSaveNewButtonText;
@@ -243,14 +367,41 @@ function modalDelete(userID) {
                 // Could Not Connect to Database
                 case 403:
                     console.log("[Delete Contact] Error 403: Could Not Connect to Database");
+                    document.getElementById("buttonMessages").innerHTML = error403Message;
+                    if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                    {
+                        document.getElementById("buttonMessages").classList.add("text-danger");
+                        if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                        {
+                            document.getElementById("buttonMessages").classList.remove("text-success");
+                        }
+                    }
                     break;
                 // URL Not Found
                 case 404:
                     console.log("[Delete Contact] Error 404: URL Not Found");
+                    document.getElementById("buttonMessages").innerHTML = error404Message;
+                    if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                    {
+                        document.getElementById("buttonMessages").classList.add("text-danger");
+                        if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                        {
+                            document.getElementById("buttonMessages").classList.remove("text-success");
+                        }
+                    }
                     break;
-                // \o/
+            // \o/
                 default:
                     console.log("[Delete Contact] Unknown Error: What did you do to get here?!")
+                    document.getElementById("buttonMessages").innerHTML = errorUnknown;
+                    if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                    {
+                        document.getElementById("buttonMessages").classList.add("text-danger");
+                        if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                        {
+                            document.getElementById("buttonMessages").classList.remove("text-success");
+                        }
+                    }
             }
         }
     };
