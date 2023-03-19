@@ -90,13 +90,20 @@ function modalAddNew(userID) {
     const email = manageModal.querySelector('#emailInput').value;
     const phone = manageModal.querySelector('#phoneInput').value;
 
-    // Validate Email and Phone format
-
+    if(verifyFields(firstName,lastName,email,phone) != 0)
+    {
+        if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+            document.getElementById("buttonMessages").classList.remove("visually-hidden");
+        displayFailedVerification(verifyFields(firstName,lastName,email,phone), email,phone);
+        return;
+    }
     // Build POST request
     var url = "https://codegojolt.xyz/LAMPAPI/createContact.php";
     console.log("adding new contact...");
     var xmlhttp, newID, myObj = [];
-    var payload = {"UserID": userID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": phone};
+    var digits = phone.replace(/\D/g, "");
+    var modified = digits.replace( /(\d\d\d)(\d\d\d)(\d\d\d\d)/g,  "($1)-$2-$3" );
+    var payload = {"UserID": userID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": modified};
     xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function()
     {
@@ -121,14 +128,7 @@ function modalAddNew(userID) {
                             document.getElementById("buttonMessages").classList.remove("text-danger");
                         }
                     }
-                    if (document.getElementById("firstInput").classList.contains("is-invalid"))
-                        document.getElementById("firstInput").setAttribute("class", "form-control is-valid");
-                    if (document.getElementById("lastInput").classList.contains("is-invalid"))
-                        document.getElementById("lastInput").setAttribute("class", "form-control is-valid");
-                    if (document.getElementById("emailInput").classList.contains("is-invalid"))
-                        document.getElementById("emailInput").setAttribute("class", "form-control is-valid");
-                    if (document.getElementById("phoneInput").classList.contains("is-invalid"))
-                        document.getElementById("phoneInput").setAttribute("class", "form-control is-valid");
+                    displayFailedVerification(0, email,phone);
                     document.getElementById("delete").classList.remove("visually-hidden");
                     document.getElementById("saveUpdate").innerHTML = modalSaveUpdatesButtonText;
                     // Swap Contact ID for UserID and add new record to displayed results table
@@ -154,6 +154,7 @@ function modalAddNew(userID) {
                     }
                     document.getElementById("firstInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("lastInput").setAttribute("class", "form-control is-invalid");
+                    document.getElementById("emailInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("phoneInput").setAttribute("class", "form-control is-invalid");
                     break;
                 // Could Not Connect to Database
@@ -215,7 +216,13 @@ function modalUpdate(userID) {
         const lastName = manageModal.querySelector('#lastInput').value;
         const email = manageModal.querySelector('#emailInput').value;
         const phone = manageModal.querySelector('#phoneInput').value;
-
+        if(verifyFields(firstName,lastName,email,phone) != 0)
+        {
+            if (document.getElementById("buttonMessages").classList.contains("visually-hidden"))
+                document.getElementById("buttonMessages").classList.remove("visually-hidden");
+            displayFailedVerification(verifyFields(firstName,lastName,email,phone),email,phone)
+            return;
+        }
         // Get ID for corresponding DOM element
         const contactID = localStorage.getItem("currentModalContactID");
 
@@ -223,7 +230,9 @@ function modalUpdate(userID) {
         var url = "https://codegojolt.xyz/LAMPAPI/updateContact.php";
         console.log(`updating contact ID ${contactID}...`);
         var xmlhttp, myObj;
-        var payload = {"ID": contactID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": phone};
+        var digits = phone.replace(/\D/g, "");
+        var modified = digits.replace( /(\d\d\d)(\d\d\d)(\d\d\d\d)/g,  "($1)-$2-$3" );
+        var payload = {"ID": contactID, "FirstName": firstName, "LastName": lastName, "Email": email, "Phone": modified};
         xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function()
         {
@@ -239,6 +248,7 @@ function modalUpdate(userID) {
                         console.log(`Successfully updated (${myObj["ID"]}); saved as ${myObj["FirstName"]} ${myObj["LastName"]}, ${myObj["Email"]}, ${myObj["Phone"]}`);
                         // Update modal with success message and switch to add mode
                         document.getElementById("buttonMessages").innerHTML = myObj["FirstName"] + " was successfully updated in your contacts.";
+                        displayFailedVerification(0,email,phone)
                         if (!document.getElementById("buttonMessages").classList.contains("text-success"))
                         {
                             document.getElementById("buttonMessages").classList.add("text-success");
@@ -498,3 +508,160 @@ function fillResponse(myObj, makeFirstShaded) {
 }
 
 document.addEventListener('DOMContentLoaded', myFunction(localStorage.getItem("userID")), false);
+
+function verifyFields(first,last,emailAddress,phone)
+{
+    const phoneRe = new RegExp(/^((([0-9]{3}))|([0-9]{3}))[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/);
+    const emailRe = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+    var digits = phone.replace(/\D/g, "");
+
+    if(first == "")
+    {
+        return 1;
+    }
+    else if (last == "")
+    {
+        return 2;
+    }
+    else if (emailRe.test(emailAddress) == false)
+    {
+        return 3;
+    }
+    else if(phoneRe.test(digits) == false)
+    {
+        return 4;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+function displayFailedVerification(errorCode, email, phone)
+{
+    switch(errorCode)
+        {
+            case 0:
+                if (!document.getElementById("firstInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("firstInput").classList.add("is-valid");
+                    if (document.getElementById("firstInput").classList.contains("is-invalid"))
+                    document.getElementById("firstInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("lastInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("lastInput").classList.add("is-valid");
+                    if (document.getElementById("lastInput").classList.contains("is-invalid"))
+                    document.getElementById("lastInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("emailInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("emailInput").classList.add("is-valid");
+                    if (document.getElementById("emailInput").classList.contains("is-invalid"))
+                    document.getElementById("emailInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("phoneInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("phoneInput").classList.add("is-valid");
+                    if (document.getElementById("phoneInput").classList.contains("is-invalid"))
+                    document.getElementById("phoneInput").classList.remove("is-invalid");
+                }
+                return;
+            case 1:
+                document.getElementById("buttonMessages").innerHTML = "Please input a valid first name.";
+                if (document.getElementById("firstInput").classList.contains("is-valid"))
+                    document.getElementById("firstInput").classList.remove("is-valid");
+                if (!document.getElementById("firstInput").classList.contains("is-invalid"))
+                    document.getElementById("firstInput").classList.add("is-invalid");
+                if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                {
+                    document.getElementById("buttonMessages").classList.add("text-danger");
+                    if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                    {
+                        document.getElementById("buttonMessages").classList.remove("text-success");
+                    }
+                }
+                return;
+            case 2:
+                document.getElementById("buttonMessages").innerHTML = "Please input a valid last name.";
+                if (!document.getElementById("firstInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("firstInput").classList.add("is-valid");
+                    if (document.getElementById("firstInput").classList.contains("is-invalid"))
+                    document.getElementById("firstInput").classList.remove("is-invalid");
+                }
+                if (document.getElementById("lastInput").classList.contains("is-valid"))
+                    document.getElementById("lastInput").classList.remove("is-valid");
+                if (!document.getElementById("lastInput").classList.contains("is-invalid"))
+                    document.getElementById("lastInput").classList.add("is-invalid");
+                if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                {
+                    document.getElementById("buttonMessages").classList.add("text-danger");
+                    if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                    {
+                        document.getElementById("buttonMessages").classList.remove("text-success");
+                    }
+                }
+                return;
+            case 3:
+                document.getElementById("buttonMessages").innerHTML = email + " is not a valid email.";
+                if (!document.getElementById("firstInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("firstInput").classList.add("is-valid");
+                    if (document.getElementById("firstInput").classList.contains("is-invalid"))
+                    document.getElementById("firstInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("lastInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("lastInput").classList.add("is-valid");
+                    if (document.getElementById("lastInput").classList.contains("is-invalid"))
+                    document.getElementById("lastInput").classList.remove("is-invalid");
+                }
+                if (document.getElementById("emailInput").classList.contains("is-valid"))
+                    document.getElementById("emailInput").classList.remove("is-valid");
+                if (!document.getElementById("emailInput").classList.contains("is-invalid"))
+                    document.getElementById("emailInput").classList.add("is-invalid");
+                if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                {
+                    document.getElementById("buttonMessages").classList.add("text-danger");
+                    if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                    {
+                        document.getElementById("buttonMessages").classList.remove("text-success");
+                    }
+                }
+                return;
+            case 4:
+                if (!document.getElementById("firstInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("firstInput").classList.add("is-valid");
+                    if (document.getElementById("firstInput").classList.contains("is-invalid"))
+                    document.getElementById("firstInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("lastInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("lastInput").classList.add("is-valid");
+                    if (document.getElementById("lastInput").classList.contains("is-invalid"))
+                    document.getElementById("lastInput").classList.remove("is-invalid");
+                }
+                if (!document.getElementById("emailInput").classList.contains("is-valid"))
+                {
+                    document.getElementById("emailInput").classList.add("is-valid");
+                    if (document.getElementById("emailInput").classList.contains("is-invalid"))
+                    document.getElementById("emailInput").classList.remove("is-invalid");
+                }
+                if (document.getElementById("phoneInput").classList.contains("is-valid"))
+                    document.getElementById("phoneInput").classList.remove("is-valid");
+                if (!document.getElementById("phoneInput").classList.contains("is-invalid"))
+                    document.getElementById("phoneInput").classList.add("is-invalid");
+                document.getElementById("buttonMessages").innerHTML = phone + " is not a valid phone number. Please follow the NANP format: XXX-XXX-XXXX.";
+                if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
+                {
+                    document.getElementById("buttonMessages").classList.add("text-danger");
+                    if (document.getElementById("buttonMessages").classList.contains("text-success"))
+                    {
+                        document.getElementById("buttonMessages").classList.remove("text-success");
+                    }
+                }
+                return;
+        }
+}

@@ -64,25 +64,22 @@
             <!-- Form body start-->
             <main class="form-signin w-100 m-auto">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="firstInput" value="John" required> <!-- These value-"" fields would need to be filled-->
+                  <input type="text" class="form-control" id="firstInput" value="John" required>
                   <label for="firstInput">First name</label>
                 </div>
           
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="lastInput" value="Doe" required> <!-- These value-"" fields would need to be filled-->
+                  <input type="text" class="form-control" id="lastInput" value="Doe" required>
                   <label for="lastInput">Last name</label>
                 </div>
           
                 <div class="form-floating">
-                  <input type="email" class="form-control" id="emailInput" value="johndoe@domain.com" required> <!-- These value-"" fields would need to be filled-->
+                  <input type="email" class="form-control" id="emailInput" value="johndoe@domain.com" required>
                   <label for="emailInput">Email address</label>
-                  <div class="invalid-feedback">
-                    Invalid Email
-                  </div>
                 </div>
 
                 <div class="form-floating">
-                  <input type="tel" class="form-control" id="phoneInput" value = "(123)-456-7890" required> <!-- These value-"" fields would need to be filled-->
+                  <input type="tel" class="form-control" id="phoneInput" value = "(123)-456-7890" required>
                   <label for="phoneInput">Phone number</label>
                 </div>
                 
@@ -102,7 +99,7 @@
       </div>
     </div>
 
-    <!-- Table will prioritize width:50% but will never wrap the text to maintain readability-->
+    <!-- Table no longer prioritizes any specific width except when passing into mobile width-->
     <table id="resultTable" class="table table-hover">
       <thead>
         <tr>
