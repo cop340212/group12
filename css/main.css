@@ -189,7 +189,7 @@ td {
   #manageButton{
     font-size: 100%;
   }
-  #phoneLabel{
+  /*#phoneLabel{
     visibility: hidden;
     position: relative;
   }
@@ -199,7 +199,7 @@ td {
     left: 0;
     content: 'Phone #';
     
-  }
+  }*/
 }
 
 #searchInput{
@@ -262,10 +262,8 @@ table {
   display: flex;
   align-items: center;
   position: absolute;
-  /*
   margin-left:25px;
   margin-right:75%;
-  */
   width: 72px;
 }
 
