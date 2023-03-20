@@ -18,11 +18,11 @@
     <link href="../css/main.css" rel="stylesheet">
   </head>
   <body>
-    <main class="main-logout position-absolute top-0 translate-middle-x">
+    <!--<main class="main-logout top-0 translate-middle-x">
       <div class="nav-bar-logout" id="logout" >
-        <button  type="button" id="logout" class="btn btn-secondary right" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick='userLogout()'>Logout</button>
+        
       </div>
-    </main>
+    </main>-->
     <main class="main-search position-absolute top-0 translate-middle-x">
       <div class="nav-bar">
         <button type="button" id="addNewContactButton" class="btn btn-primary lg-view" data-bs-toggle="modal" data-bs-target="#aboutModal" data-toggle="tooltip" data-placement="bottom" title="Add New Contact">
@@ -46,6 +46,9 @@
               </button>
           </div>
         </form>
+      </div>
+      <div class="nav-bar-logout">
+        <button  type="button" id="logout" class="btn btn-secondary right" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick='userLogout()'>Logout</button>
       </div>
       <p id="results"></p>
     </main>
@@ -106,7 +109,7 @@
           <th class="th-lg">First</th>
           <th class="th-lg">Last</th>
           <th class="th-lg">Email</th>
-          <th class="th-lg">Phone Number</th>
+          <th class="th-lg" id="phoneLabel">Phone Number</th>
           <th class="th-lg">Manage</th>
         </tr>
       </thead>
