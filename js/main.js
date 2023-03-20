@@ -135,8 +135,16 @@ function modalAddNew(userID) {
                     delete payload["UserID"];
                     payload["ID"] = newID;
                     myObj.push(payload);
-                    let isLastShaded = document.getElementById('output-table-body').lastChild.classList.contains("table-light");
-                    fillResponse(myObj, !isLastShaded);
+                    if(document.getElementById('output-table-body').childElementCount > 0)
+                    {
+                        let isLastShaded = document.getElementById('output-table-body').lastChild.classList.contains("table-light");
+                        fillResponse(myObj, !isLastShaded);
+                    } 
+                    else
+                    {
+                        fillResponse(myObj, 0);
+                    }
+                        
                     // Keep current modal record's ID in local storage for button function access
                     localStorage.setItem("currentModalContactID", newID);
                     break;
