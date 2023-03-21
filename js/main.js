@@ -172,10 +172,10 @@ function modalAddNew(userID) {
                     document.getElementById("lastInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("emailInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("phoneInput").setAttribute("class", "form-control is-invalid");
-                    document.getElementById("firstInputDiv").setAttribute("class", "errorForeground");
-                    document.getElementById("lastInputDiv").setAttribute("class", "errorForeground");
-                    document.getElementById("emailInputDiv").setAttribute("class", "errorForeground");
-                    document.getElementById("phoneInputDiv").setAttribute("class", "errorForeground");
+                    document.getElementById("firstInputDiv").setAttribute("class", "form-floating errorForeground");
+                    document.getElementById("lastInputDiv").setAttribute("class", "form-floating errorForeground");
+                    document.getElementById("emailInputDiv").setAttribute("class", "form-floating errorForeground");
+                    document.getElementById("phoneInputDiv").setAttribute("class", "form-floating errorForeground");
                     break;
                 // Could Not Connect to Database
                 case 403:
