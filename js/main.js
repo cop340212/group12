@@ -34,6 +34,14 @@ manageModal.addEventListener('show.bs.modal', event =>
             document.getElementById("emailInput").classList.remove("is-valid");
         if (document.getElementById("phoneInput").classList.contains("is-valid"))
             document.getElementById("phoneInput").classList.remove("is-valid");
+        if (document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+            document.getElementById("firstInputDiv").classList.remove("errorForeground");
+        if (document.getElementById("lastInputDiv").classList.contains("errorForeground"))
+            document.getElementById("lastInputDiv").classList.remove("errorForeground");
+        if (document.getElementById("emailInputDiv").classList.contains("errorForeground"))
+            document.getElementById("emailInputDiv").classList.remove("errorForeground");
+        if (document.getElementById("phoneInputDiv").classList.contains("errorForeground"))
+            document.getElementById("phoneInputDiv").classList.remove("errorForeground");
 
         // Hide message text area
         if (!document.getElementById("buttonMessages").classList.contains("visually-hidden"))
@@ -164,6 +172,10 @@ function modalAddNew(userID) {
                     document.getElementById("lastInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("emailInput").setAttribute("class", "form-control is-invalid");
                     document.getElementById("phoneInput").setAttribute("class", "form-control is-invalid");
+                    document.getElementById("firstInputDiv").setAttribute("class", "errorForeground");
+                    document.getElementById("lastInputDiv").setAttribute("class", "errorForeground");
+                    document.getElementById("emailInputDiv").setAttribute("class", "errorForeground");
+                    document.getElementById("phoneInputDiv").setAttribute("class", "errorForeground");
                     break;
                 // Could Not Connect to Database
                 case 403:
@@ -554,25 +566,33 @@ function displayFailedVerification(errorCode, email, phone)
                 {
                     document.getElementById("firstInput").classList.add("is-valid");
                     if (document.getElementById("firstInput").classList.contains("is-invalid"))
-                    document.getElementById("firstInput").classList.remove("is-invalid");
+                        document.getElementById("firstInput").classList.remove("is-invalid");
+                    if (document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("firstInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("lastInput").classList.contains("is-valid"))
                 {
                     document.getElementById("lastInput").classList.add("is-valid");
                     if (document.getElementById("lastInput").classList.contains("is-invalid"))
-                    document.getElementById("lastInput").classList.remove("is-invalid");
+                        document.getElementById("lastInput").classList.remove("is-invalid");
+                    if (document.getElementById("lastInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("lastInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("emailInput").classList.contains("is-valid"))
                 {
                     document.getElementById("emailInput").classList.add("is-valid");
                     if (document.getElementById("emailInput").classList.contains("is-invalid"))
-                    document.getElementById("emailInput").classList.remove("is-invalid");
+                        document.getElementById("emailInput").classList.remove("is-invalid");
+                    if (document.getElementById("emailInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("emailInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("phoneInput").classList.contains("is-valid"))
                 {
                     document.getElementById("phoneInput").classList.add("is-valid");
                     if (document.getElementById("phoneInput").classList.contains("is-invalid"))
-                    document.getElementById("phoneInput").classList.remove("is-invalid");
+                        document.getElementById("phoneInput").classList.remove("is-invalid");
+                    if (document.getElementById("phoneInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("phoneInputDiv").classList.remove("errorForeground");
                 }
                 return;
             case 1:
@@ -581,6 +601,8 @@ function displayFailedVerification(errorCode, email, phone)
                     document.getElementById("firstInput").classList.remove("is-valid");
                 if (!document.getElementById("firstInput").classList.contains("is-invalid"))
                     document.getElementById("firstInput").classList.add("is-invalid");
+                if (!document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+                    document.getElementById("firstInputDiv").classList.add("errorForeground");
                 if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                 {
                     document.getElementById("buttonMessages").classList.add("text-danger");
@@ -596,12 +618,16 @@ function displayFailedVerification(errorCode, email, phone)
                 {
                     document.getElementById("firstInput").classList.add("is-valid");
                     if (document.getElementById("firstInput").classList.contains("is-invalid"))
-                    document.getElementById("firstInput").classList.remove("is-invalid");
+                        document.getElementById("firstInput").classList.remove("is-invalid");
+                    if (document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("firstInputDiv").classList.remove("errorForeground");
                 }
                 if (document.getElementById("lastInput").classList.contains("is-valid"))
                     document.getElementById("lastInput").classList.remove("is-valid");
                 if (!document.getElementById("lastInput").classList.contains("is-invalid"))
                     document.getElementById("lastInput").classList.add("is-invalid");
+                if (!document.getElementById("lastInputDiv").classList.contains("errorForeground"))
+                    document.getElementById("lastInputDiv").classList.add("errorForeground");
                 if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                 {
                     document.getElementById("buttonMessages").classList.add("text-danger");
@@ -617,18 +643,24 @@ function displayFailedVerification(errorCode, email, phone)
                 {
                     document.getElementById("firstInput").classList.add("is-valid");
                     if (document.getElementById("firstInput").classList.contains("is-invalid"))
-                    document.getElementById("firstInput").classList.remove("is-invalid");
+                        document.getElementById("firstInput").classList.remove("is-invalid");
+                    if (document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("firstInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("lastInput").classList.contains("is-valid"))
                 {
                     document.getElementById("lastInput").classList.add("is-valid");
                     if (document.getElementById("lastInput").classList.contains("is-invalid"))
-                    document.getElementById("lastInput").classList.remove("is-invalid");
+                        document.getElementById("lastInput").classList.remove("is-invalid");
+                    if (document.getElementById("lastInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("lastInputDiv").classList.remove("errorForeground");
                 }
                 if (document.getElementById("emailInput").classList.contains("is-valid"))
                     document.getElementById("emailInput").classList.remove("is-valid");
                 if (!document.getElementById("emailInput").classList.contains("is-invalid"))
                     document.getElementById("emailInput").classList.add("is-invalid");
+                if (!document.getElementById("emailInputDiv").classList.contains("errorForeground"))
+                    document.getElementById("emailInputDiv").classList.add("errorForeground");
                 if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                 {
                     document.getElementById("buttonMessages").classList.add("text-danger");
@@ -643,25 +675,33 @@ function displayFailedVerification(errorCode, email, phone)
                 {
                     document.getElementById("firstInput").classList.add("is-valid");
                     if (document.getElementById("firstInput").classList.contains("is-invalid"))
-                    document.getElementById("firstInput").classList.remove("is-invalid");
+                        document.getElementById("firstInput").classList.remove("is-invalid");
+                    if (document.getElementById("firstInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("firstInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("lastInput").classList.contains("is-valid"))
                 {
                     document.getElementById("lastInput").classList.add("is-valid");
                     if (document.getElementById("lastInput").classList.contains("is-invalid"))
-                    document.getElementById("lastInput").classList.remove("is-invalid");
+                        document.getElementById("lastInput").classList.remove("is-invalid");
+                    if (document.getElementById("lastInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("lastInputDiv").classList.remove("errorForeground");
                 }
                 if (!document.getElementById("emailInput").classList.contains("is-valid"))
                 {
                     document.getElementById("emailInput").classList.add("is-valid");
                     if (document.getElementById("emailInput").classList.contains("is-invalid"))
-                    document.getElementById("emailInput").classList.remove("is-invalid");
+                        document.getElementById("emailInput").classList.remove("is-invalid");
+                    if (document.getElementById("emailInputDiv").classList.contains("errorForeground"))
+                        document.getElementById("emailInputDiv").classList.remove("errorForeground");
                 }
                 if (document.getElementById("phoneInput").classList.contains("is-valid"))
                     document.getElementById("phoneInput").classList.remove("is-valid");
                 if (!document.getElementById("phoneInput").classList.contains("is-invalid"))
                     document.getElementById("phoneInput").classList.add("is-invalid");
                 document.getElementById("buttonMessages").innerHTML = phone + " is not a valid phone number. Please follow the NANP format: XXX-XXX-XXXX.";
+                if (!document.getElementById("phoneInputDiv").classList.contains("errorForeground"))
+                    document.getElementById("phoneInputDiv").classList.add("errorForeground");
                 if (!document.getElementById("buttonMessages").classList.contains("text-danger"))
                 {
                     document.getElementById("buttonMessages").classList.add("text-danger");

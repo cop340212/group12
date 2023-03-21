@@ -281,3 +281,7 @@ table {
   background-color: #343a40;
   border-radius: .25rem;
 }
+
+.errorForeground {
+  z-index: 2;
+}
